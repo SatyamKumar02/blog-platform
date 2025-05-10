@@ -1,0 +1,43 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{% if object %}Edit{% else %}New{% endif %} Post - My Blog{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm mt-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">{% if object %}Edit{% else %}Create{% endif %} Post</h5>
+        </div>
+        <div class="card-body px-4 py-4">
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label for="id_title" class="form-label">Title</label>
+              <input type="text" name="title" class="form-control" id="id_title" value="{{ form.title.value|default_if_none:'' }}">
+              {% for error in form.title.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            <div class="mb-3">
+              <label for="id_content" class="form-label">Content</label>
+              <textarea name="content" class="form-control" id="id_content" rows="6">{{ form.content.value|default_if_none:'' }}</textarea>
+              {% for error in form.content.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <button type="submit" class="btn btn-success">Save</button>
+              <a href="{% url 'blog:post-list' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
